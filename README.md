@@ -80,3 +80,13 @@ vue / vuex / vue-router / axios(fetch) / element-ui
 - react-router-dom: hash/browser
 - redux: react-redux、dva、redux-saga、mobx……
 - axios/fetch
+
+### 目录结构设计
+
+- index.js 入口文件，wenpack从这个文件开始导入打包（MPA中需要创建多入口文件）
+- api 数据处理
+- store redux公共状态管理
+- assets 存储公共资源
+- utils 公共js 方法
+- routes 路由管理
+- components 公共组件
