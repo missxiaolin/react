@@ -90,3 +90,8 @@ vue / vuex / vue-router / axios(fetch) / element-ui
 - utils 公共js 方法
 - routes 路由管理
 - components 公共组件
+
+### 虚拟dom jsx 到真实dom的渲染原理
+
+1、把jsx基于BABEL-PRESET-REACT-APP语法解析包变为CREATE-ELEMENT格式 (https://www.babeljs.cn/) 每当遇到一个元素都会CREATE-ELEMENT React-createElement([标签名]，[PROPS|NULL]，……)有几个子节点，从三个实参开始分别是每个节点的处理（文本节点直接就是文本内容，元素节点还会CREATE-ELEMENT）
+2、执行CREATE-ELEMENT
