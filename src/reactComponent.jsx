@@ -9,7 +9,7 @@ import React from 'react'
 /**
  * 只要在js 中使用jsx 必须引入react
  * 简单：开发维护简单，渲染也简单，渲染速度快
- * 静态：只要把组件调取渲染完后，组件的内容将不在修改
+ * 静态：只要把组件调取渲染完后，组件的内容将不在修改（函数式组件中没有自己的状态管控、生命周期等）
  * @param {*} props 
  */
 export default function Vote(props) {
