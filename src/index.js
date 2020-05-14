@@ -4,7 +4,7 @@ import './index.scss'
 import Vote from './reactComponent'
 
 ReactDOM.render(<div className="name">
-    <Vote title="测试">
+    <Vote>
         <span>sss</span>
     </Vote>
 </div>, document.getElementById('root'));

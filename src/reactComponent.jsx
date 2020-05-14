@@ -5,6 +5,7 @@
  * 3、react hook
  */
 import React from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * 只要在js 中使用jsx 必须引入react
@@ -26,14 +27,22 @@ import React from 'react'
  *      2、call继承
  *      3、寄生组合继承 Object.create
  *      4、ES6中基于class继承
+ * 基于第三方插件prop-types 设置属性的规则
  */
 class Vote extends React.Component {
+    // 给某个属性设置默认值
+    static defaultProps  = {
+        title: "设置标题"
+    }
+    static propTypes = {
+        title: PropTypes.string.isRequired
+    }
     constructor(props) {
         super()
     }
 
     render() {
-        return <div>测试</div>
+        return <div>测试{this.props.title}</div>
     }
 
 
