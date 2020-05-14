@@ -12,9 +12,32 @@ import React from 'react'
  * 静态：只要把组件调取渲染完后，组件的内容将不在修改（函数式组件中没有自己的状态管控、生命周期等）
  * @param {*} props 
  */
-export default function Vote(props) {
-    return <div>
-        {props.title}
-        {props.children}
-    </div>
- }
+// export default function Vote(props) {
+//     return <div>
+//         {props.title}
+//         {props.children}
+//     </div>
+//  }
+
+/**
+ * 类组件
+ * 继承
+ *      1、原型继承
+ *      2、call继承
+ *      3、寄生组合继承 Object.create
+ *      4、ES6中基于class继承
+ */
+class Vote extends React.Component {
+    constructor(props) {
+        super()
+    }
+
+    render() {
+        return <div>测试</div>
+    }
+
+
+
+}
+
+export default Vote
