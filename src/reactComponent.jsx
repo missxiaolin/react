@@ -39,10 +39,23 @@ class Vote extends React.Component {
     }
     constructor(props) {
         super()
+        this.state = {
+            time: new Date().toLocaleString()
+        }
     }
 
     render() {
-        return <div>测试{this.props.title}</div>
+        // let time = new Date().toLocaleString()
+        return <div>测试{this.props.title}
+        <h2>{this.state.time}</h2>
+        </div>
+    }
+
+    componentDidMount() {
+        // 第一次加载组件渲染完毕
+        this.setState({
+            time: "sssss"
+        })
     }
 
 
