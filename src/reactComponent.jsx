@@ -47,7 +47,7 @@ class Vote extends React.Component {
     render() {
         // let time = new Date().toLocaleString()
         return <div>测试{this.props.title}
-        <h2>{this.state.time}</h2>
+        <h2 ref="timeBox">{this.state.time}</h2>
         </div>
     }
 
@@ -56,10 +56,9 @@ class Vote extends React.Component {
         this.setState({
             time: "sssss"
         })
+
+        console.log(this.refs.timeBox)
     }
-
-
-
 }
 
 export default Vote
