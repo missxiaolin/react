@@ -29,36 +29,58 @@ import PropTypes from 'prop-types'
  *      4、ES6中基于class继承
  * 基于第三方插件prop-types 设置属性的规则
  */
-class Vote extends React.Component {
-    // 给某个属性设置默认值
-    static defaultProps  = {
-        title: "设置标题"
-    }
-    static propTypes = {
-        title: PropTypes.string.isRequired
-    }
-    constructor(props) {
+// export default class Vote extends React.Component {
+//     // 给某个属性设置默认值
+//     static defaultProps  = {
+//         title: "设置标题"
+//     }
+//     static propTypes = {
+//         title: PropTypes.string.isRequired
+//     }
+//     constructor(props) {
+//         super()
+//         this.state = {
+//             time: new Date().toLocaleString()
+//         }
+//     }
+
+//     render() {
+//         // let time = new Date().toLocaleString()
+//         return <div>测试{this.props.title}
+//         <h2 ref="timeBox">{this.state.time}</h2>
+//         </div>
+//     }
+
+//     componentDidMount() {
+//         // 第一次加载组件渲染完毕
+//         this.setState({
+//             time: "sssss"
+//         })
+
+//         console.log(this.refs.timeBox)
+//     }
+// }
+
+export default class Vote extends React.Component {
+    constructor() {
         super()
-        this.state = {
-            time: new Date().toLocaleString()
-        }
     }
 
     render() {
-        // let time = new Date().toLocaleString()
-        return <div>测试{this.props.title}
-        <h2 ref="timeBox">{this.state.time}</h2>
+        return <div className="voteBox">
+            <header className="headerBox">
+                <h3>我是标题</h3>
+                <span>N: 0</span>
+            </header>
+            <main className="mainBox">
+                <p>支持人数：</p>
+                <p>反对人数：</p>
+                <p>支持率：</p>
+            </main>
+            <footer className="fotterBox">
+                <button>支持</button>
+                <button>反对</button>
+            </footer>
         </div>
     }
-
-    componentDidMount() {
-        // 第一次加载组件渲染完毕
-        this.setState({
-            time: "sssss"
-        })
-
-        console.log(this.refs.timeBox)
-    }
 }
-
-export default Vote
