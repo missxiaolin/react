@@ -1,0 +1,15 @@
+/*
+ * react不像vue一样，基于scoped控制是自己组件私有样式，所以在合并模块的时候可能导致冲突
+ * 1、基于额外的webpack 插件，在处理css的时候可以把组件样式控制为私有
+ * 2、基于css预编译语言，自己在写样式就注意样式类的区分
+ */
+
+ .voteBox {
+     box-sizing: border-box;
+     border: 1px solid lightblue;
+     margin: 20px auto;
+     padding: 10px;
+     width: 500px;
+     height: auto;
+     overflow: hidden;
+ }

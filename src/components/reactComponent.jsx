@@ -6,6 +6,7 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
+import '../assets/vote.scss'
 
 /**
  * 只要在js 中使用jsx 必须引入react
@@ -62,25 +63,70 @@ import PropTypes from 'prop-types'
 // }
 
 export default class Vote extends React.Component {
-    constructor() {
-        super()
+    // 设置传参默认值
+    static defaultProps =  {
+        supNum: 0,
+        oppNum: 0
+    }
+
+    // 设置传参规则
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        supNum: PropTypes.number,
+        oppNum: PropTypes.number
+    }
+
+    // 设置初始值
+    constructor(props) {
+        super(props)
+        this.state = {
+            supNum: this.props.supNum,
+            oppNum: this.props.oppNum,
+        }
     }
 
     render() {
+        let {supNum, oppNum} = this.state
+
         return <div className="voteBox">
             <header className="headerBox">
-                <h3>我是标题</h3>
-                <span>N: 0</span>
+                <h3>{this.props.title}</h3>
+                <span>N: {supNum + oppNum}</span>
             </header>
             <main className="mainBox">
-                <p>支持人数：</p>
-                <p>反对人数：</p>
-                <p>支持率：</p>
+                <p>支持人数：{supNum}</p>
+                <p>反对人数：{oppNum}</p>
+                <p>支持率：{this.getRatio()}</p>
             </main>
             <footer className="fotterBox">
-                <button>支持</button>
-                <button>反对</button>
+                <button onClick={this.handle.bind(this, 'A')}>支持</button>
+                <button onClick={this.handle.bind(this, 'B')}>反对</button>
             </footer>
         </div>
+    }
+
+    // 自定义使用方法
+    getRatio = () => {
+        let {supNum, oppNum} = this.state,
+            ratio = null,
+            total = supNum + oppNum
+
+        ratio = total === 0 ? 0 : supNum / total * 100
+
+        return `${ratio.toFixed(2)}%`
+    }
+
+    handle = (type, ev) => {
+        console.log(ev.currentTarget)
+        let {supNum, oppNum} = this.state
+        if (type === 'A') {
+            this.setState({
+                supNum: supNum + 1
+            })
+            return
+        }
+        this.setState({
+            oppNum: oppNum + 1
+        })
     }
 }
