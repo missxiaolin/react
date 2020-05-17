@@ -132,50 +132,33 @@ import '../assets/vote.scss'
 // }
 
 class VoteMain extends React.Component {
-    // 设置传参默认值
-    static defaultProps =  {
-        supNum: 0,
-        oppNum: 0
-    }   
-
-    // 设置传参规则
-    static propTypes = {
-        supNum: PropTypes.number,
-        oppNum: PropTypes.number
-    }
-
-    // 设置初始值
-    constructor(props) {
-        super(props)
-        this.state = {
-            supNum: this.props.supNum,
-            oppNum: this.props.oppNum,
-        }
-    }
-
     render() {
-        let {supNum, oppNum} = this.state
+        let { supNum, oppNum } = this.props
         return <main className="mainBox">
-                <p>支持人数：{supNum}</p>
-                <p>反对人数：{oppNum}</p>
-                <p>支持率：</p>
-            </main>
+            <p>支持人数：{supNum}</p>
+            <p>反对人数：{oppNum}</p>
+        </main>
     }
 }
 
-class VoteFotter  extends React.Component {
+class VoteFotter extends React.Component {
     render() {
+        let { callback } = this.props
         return <footer className="fotterBox">
-                <button>支持</button>
-                <button>反对</button>
-            </footer>
+            <button onClick={ev => {
+                callback('SUP', 10)
+            }}>支持</button>
+            <button onClick={ev => {
+                callback('OPP', 5)
+            }}>反对</button>
+        </footer>
     }
 }
 
 
 export default class Vote extends React.Component {
     // 设置传参默认值
-    static defaultProps =  {
+    static defaultProps = {
         supNum: 0,
         oppNum: 0
     }
@@ -197,15 +180,22 @@ export default class Vote extends React.Component {
     }
 
     render() {
-        let {supNum, oppNum} = this.state
-
+        let { supNum, oppNum } = this.state
         return <div className="voteBox">
             <header className="headerBox">
                 <h3>{this.props.title}</h3>
                 <span>N: {supNum + oppNum}</span>
             </header>
-            <VoteMain />
-            <VoteFotter />
+            <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
+            <VoteFotter callback={this.handle}></VoteFotter>
         </div>
+    }
+
+    handle = (type, num = 1) => {
+        let { supNum, oppNum } = this.state
+        this.setState({
+            supNum: type == 'SUP' ? supNum + num : supNum,
+            oppNum: type == 'OPP' ? oppNum + num : oppNum
+        })
     }
 }
