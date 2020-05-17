@@ -202,9 +202,136 @@ import '../assets/vote.scss'
 // }
 
 // 订阅发布
-import em from './EventEmit'
+// import em from './EventEmit'
+
+// class VoteMain extends React.Component {
+//     state = {
+//         supNum: 0,
+//         oppNum: 0
+//     }
+
+//     handle = type => {
+//         let { supNum, oppNum } = this.state
+//         type == 'SUP' ? this.setState({ supNum: supNum + 1 }) : this.setState({ oppNum: oppNum + 1 })
+//     }
+
+//     render() {
+//         let { supNum, oppNum } = this.state
+//         return <main className="mainBox">
+//             <p>支持人数：{supNum}</p>
+//             <p>反对人数：{oppNum}</p>
+//         </main>
+//     }
+
+//     componentDidMount() {
+//         // 订阅事件
+//         em.$on('mainHandle', this.handle)
+//     }
+// }
+
+// class VoteFotter extends React.Component {
+//     render() {
+//         let { callback } = this.props
+//         return <footer className="fotterBox">
+//             <button onClick={ev => {
+//                 // 通知订阅方法执行
+//                 em.$emit('mainHandle', 'SUP', 10)
+//                 em.$emit('indexHandle')
+//             }}>支持</button>
+//             <button onClick={ev => {
+//                 em.$emit('mainHandle', 'OPT', 5)
+//                 em.$emit('indexHandle')
+//             }}>反对</button>
+//         </footer>
+//     }
+// }
+
+
+// export default class Vote extends React.Component {
+//     // 设置传参规则
+//     static propTypes = {
+//         title: PropTypes.string.isRequired,
+//         supNum: PropTypes.number,
+//         oppNum: PropTypes.number
+//     }
+
+//     state = {
+//         totle: 0
+//     }
+
+//     render() {
+//         let { supNum, oppNum } = this.state
+//         return <div className="voteBox">
+//             <header className="headerBox">
+//                 <h3>{this.props.title}</h3>
+//                 <span>N: {this.state.totle}</span>
+//             </header>
+//             <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
+//             <VoteFotter></VoteFotter>
+//         </div>
+//     }
+
+//     componentDidMount() {
+//         em.$on('indexHandle', () => {
+//             this.setState({
+//                 totle: this.state.totle + 1
+//             })
+//         })
+//     }
+// }
 
 class VoteMain extends React.Component {
+    // 获取上下文信息，挂载到实例的this.context 中
+    static contextTypes = {
+        supNum: PropTypes.number,
+        oppNum: PropTypes.number
+    }
+    constructor(props, context) {
+        super(props, context)
+    }
+
+    render() {
+        return <main className="mainBox">
+            <p>支持人数：{this.context.supNum}</p>
+            <p>反对人数：{this.context.oppNum}</p>
+        </main>
+    }
+}
+
+class VoteFotter extends React.Component {
+    static contextTypes = {
+        handle: PropTypes.func
+    }
+    render() {
+        return <footer className="fotterBox">
+            <button onClick={ev => {
+                this.context.handle('SUP')
+            }}>支持</button>
+            <button onClick={ev => {
+                this.context.handle('OPP')
+            }}>反对</button>
+        </footer>
+    }
+}
+
+
+export default class Vote extends React.Component {
+    static childContextTypes = {
+        supNum: PropTypes.number,
+        oppNum: PropTypes.number,
+        handle: PropTypes.func
+    }
+
+    getChildContext() {
+        // 第一次getIntailState之后执行
+        return {
+            supNum: this.state.supNum,
+            oppNum: this.state.oppNum,
+            handle: this.handle
+        }
+    }
+
+    // 我们一般都要把挂载到祖先上下文中的数据放置到组件的状态上（后期只要把祖先改变，上下文也会跟着改变）
     state = {
         supNum: 0,
         oppNum: 0
@@ -215,67 +342,23 @@ class VoteMain extends React.Component {
         type == 'SUP' ? this.setState({ supNum: supNum + 1 }) : this.setState({ oppNum: oppNum + 1 })
     }
 
-    render() {
-        let { supNum, oppNum } = this.state
-        return <main className="mainBox">
-            <p>支持人数：{supNum}</p>
-            <p>反对人数：{oppNum}</p>
-        </main>
+    // 设置初始值
+    constructor(props) {
+        super(props)
+        this.state = {
+            supNum: this.props.supNum,
+            oppNum: this.props.oppNum,
+        }
     }
-
-    componentDidMount() {
-        // 订阅事件
-        em.$on('mainHandle', this.handle)
-    }
-}
-
-class VoteFotter extends React.Component {
-    render() {
-        let { callback } = this.props
-        return <footer className="fotterBox">
-            <button onClick={ev => {
-                // 通知订阅方法执行
-                em.$emit('mainHandle', 'SUP', 10)
-                em.$emit('indexHandle')
-            }}>支持</button>
-            <button onClick={ev => {
-                em.$emit('mainHandle', 'OPT', 5)
-                em.$emit('indexHandle')
-            }}>反对</button>
-        </footer>
-    }
-}
-
-
-export default class Vote extends React.Component {
-    // 设置传参规则
-    static propTypes = {
-        title: PropTypes.string.isRequired,
-        supNum: PropTypes.number,
-        oppNum: PropTypes.number
-    }
-
-    state = {
-        totle: 0
-    }
-
     render() {
         let { supNum, oppNum } = this.state
         return <div className="voteBox">
             <header className="headerBox">
                 <h3>{this.props.title}</h3>
-                <span>N: {this.state.totle}</span>
+                <span>N: {supNum + oppNum}</span>
             </header>
             <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
             <VoteFotter></VoteFotter>
         </div>
-    }
-
-    componentDidMount() {
-        em.$on('indexHandle', () => {
-            this.setState({
-                totle: this.state.totle + 1
-            })
-        })
     }
 }
