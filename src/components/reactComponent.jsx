@@ -8,6 +8,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import '../assets/vote.scss'
 
+
 /**
  * 只要在js 中使用jsx 必须引入react
  * 简单：开发维护简单，渲染也简单，渲染速度快
@@ -131,13 +132,100 @@ import '../assets/vote.scss'
 //     }
 // }
 
+// class VoteMain extends React.Component {
+//     render() {
+//         let { supNum, oppNum } = this.props
+//         return <main className="mainBox">
+//             <p>支持人数：{supNum}</p>
+//             <p>反对人数：{oppNum}</p>
+//         </main>
+//     }
+// }
+
+// class VoteFotter extends React.Component {
+//     render() {
+//         let { callback } = this.props
+//         return <footer className="fotterBox">
+//             <button onClick={ev => {
+//                 callback('SUP', 10)
+//             }}>支持</button>
+//             <button onClick={ev => {
+//                 callback('OPP', 5)
+//             }}>反对</button>
+//         </footer>
+//     }
+// }
+
+
+// export default class Vote extends React.Component {
+//     // 设置传参默认值
+//     static defaultProps = {
+//         supNum: 0,
+//         oppNum: 0
+//     }
+
+//     // 设置传参规则
+//     static propTypes = {
+//         title: PropTypes.string.isRequired,
+//         supNum: PropTypes.number,
+//         oppNum: PropTypes.number
+//     }
+
+//     // 设置初始值
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+//             supNum: this.props.supNum,
+//             oppNum: this.props.oppNum,
+//         }
+//     }
+
+//     render() {
+//         let { supNum, oppNum } = this.state
+//         return <div className="voteBox">
+//             <header className="headerBox">
+//                 <h3>{this.props.title}</h3>
+//                 <span>N: {supNum + oppNum}</span>
+//             </header>
+//             <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
+//             <VoteFotter callback={this.handle}></VoteFotter>
+//         </div>
+//     }
+
+//     handle = (type, num = 1) => {
+//         let { supNum, oppNum } = this.state
+//         this.setState({
+//             supNum: type == 'SUP' ? supNum + num : supNum,
+//             oppNum: type == 'OPP' ? oppNum + num : oppNum
+//         })
+//     }
+// }
+
+// 订阅发布
+import em from './EventEmit'
+
 class VoteMain extends React.Component {
+    state = {
+        supNum: 0,
+        oppNum: 0
+    }
+
+    handle = type => {
+        let { supNum, oppNum } = this.state
+        type == 'SUP' ? this.setState({ supNum: supNum + 1 }) : this.setState({ oppNum: oppNum + 1 })
+    }
+
     render() {
-        let { supNum, oppNum } = this.props
+        let { supNum, oppNum } = this.state
         return <main className="mainBox">
             <p>支持人数：{supNum}</p>
             <p>反对人数：{oppNum}</p>
         </main>
+    }
+
+    componentDidMount() {
+        // 订阅事件
+        em.$on('mainHandle', this.handle)
     }
 }
 
@@ -146,10 +234,13 @@ class VoteFotter extends React.Component {
         let { callback } = this.props
         return <footer className="fotterBox">
             <button onClick={ev => {
-                callback('SUP', 10)
+                // 通知订阅方法执行
+                em.$emit('mainHandle', 'SUP', 10)
+                em.$emit('indexHandle')
             }}>支持</button>
             <button onClick={ev => {
-                callback('OPP', 5)
+                em.$emit('mainHandle', 'OPT', 5)
+                em.$emit('indexHandle')
             }}>反对</button>
         </footer>
     }
@@ -157,12 +248,6 @@ class VoteFotter extends React.Component {
 
 
 export default class Vote extends React.Component {
-    // 设置传参默认值
-    static defaultProps = {
-        supNum: 0,
-        oppNum: 0
-    }
-
     // 设置传参规则
     static propTypes = {
         title: PropTypes.string.isRequired,
@@ -170,13 +255,8 @@ export default class Vote extends React.Component {
         oppNum: PropTypes.number
     }
 
-    // 设置初始值
-    constructor(props) {
-        super(props)
-        this.state = {
-            supNum: this.props.supNum,
-            oppNum: this.props.oppNum,
-        }
+    state = {
+        totle: 0
     }
 
     render() {
@@ -184,18 +264,18 @@ export default class Vote extends React.Component {
         return <div className="voteBox">
             <header className="headerBox">
                 <h3>{this.props.title}</h3>
-                <span>N: {supNum + oppNum}</span>
+                <span>N: {this.state.totle}</span>
             </header>
             <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
-            <VoteFotter callback={this.handle}></VoteFotter>
+            <VoteFotter></VoteFotter>
         </div>
     }
 
-    handle = (type, num = 1) => {
-        let { supNum, oppNum } = this.state
-        this.setState({
-            supNum: type == 'SUP' ? supNum + num : supNum,
-            oppNum: type == 'OPP' ? oppNum + num : oppNum
+    componentDidMount() {
+        em.$on('indexHandle', () => {
+            this.setState({
+                totle: this.state.totle + 1
+            })
         })
     }
 }
