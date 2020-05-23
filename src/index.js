@@ -5,6 +5,5 @@ import Vote from './components/reactComponent'
 import Count from './components/Count'
 
 ReactDOM.render(<div className="name">
-    {/* <Vote title="小北" supNum={0} oppNum={0}></Vote> */}
-    <Count />
+    <Vote title="测试标题"></Vote>
 </div>, document.getElementById('root'));

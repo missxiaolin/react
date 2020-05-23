@@ -280,85 +280,113 @@ import '../assets/vote.scss'
 //     }
 // }
 
-class VoteMain extends React.Component {
-    // 获取上下文信息，挂载到实例的this.context 中
-    static contextTypes = {
-        supNum: PropTypes.number,
-        oppNum: PropTypes.number
-    }
-    constructor(props, context) {
-        super(props, context)
-    }
+// class VoteMain extends React.Component {
+//     // 获取上下文信息，挂载到实例的this.context 中
+//     static contextTypes = {
+//         supNum: PropTypes.number,
+//         oppNum: PropTypes.number
+//     }
+//     constructor(props, context) {
+//         super(props, context)
+//     }
 
-    render() {
-        return <main className="mainBox">
-            <p>支持人数：{this.context.supNum}</p>
-            <p>反对人数：{this.context.oppNum}</p>
-        </main>
-    }
+//     render() {
+//         return <main className="mainBox">
+//             <p>支持人数：{this.context.supNum}</p>
+//             <p>反对人数：{this.context.oppNum}</p>
+//         </main>
+//     }
+// }
+
+// class VoteFotter extends React.Component {
+//     static contextTypes = {
+//         handle: PropTypes.func
+//     }
+//     render() {
+//         return <footer className="fotterBox">
+//             <button onClick={ev => {
+//                 this.context.handle('SUP')
+//             }}>支持</button>
+//             <button onClick={ev => {
+//                 this.context.handle('OPP')
+//             }}>反对</button>
+//         </footer>
+//     }
+// }
+
+
+// export default class Vote extends React.Component {
+//     static childContextTypes = {
+//         supNum: PropTypes.number,
+//         oppNum: PropTypes.number,
+//         handle: PropTypes.func
+//     }
+
+//     getChildContext() {
+//         // 第一次getIntailState之后执行
+//         return {
+//             supNum: this.state.supNum,
+//             oppNum: this.state.oppNum,
+//             handle: this.handle
+//         }
+//     }
+
+//     // 我们一般都要把挂载到祖先上下文中的数据放置到组件的状态上（后期只要把祖先改变，上下文也会跟着改变）
+//     state = {
+//         supNum: 0,
+//         oppNum: 0
+//     }
+
+//     handle = type => {
+//         let { supNum, oppNum } = this.state
+//         type == 'SUP' ? this.setState({ supNum: supNum + 1 }) : this.setState({ oppNum: oppNum + 1 })
+//     }
+
+//     // 设置初始值
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+//             supNum: this.props.supNum,
+//             oppNum: this.props.oppNum,
+//         }
+//     }
+//     render() {
+//         let { supNum, oppNum } = this.state
+//         return <div className="voteBox">
+//             <header className="headerBox">
+//                 <h3>{this.props.title}</h3>
+//                 <span>N: {supNum + oppNum}</span>
+//             </header>
+//             <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
+//             <VoteFotter></VoteFotter>
+//         </div>
+//     }
+// }
+
+
+import { useState } from 'react'
+
+/**
+ * React.Hook 创建REACT组件的新方式
+ *      介于函数式组件和类组件，既能像函数式组件一样，开发和渲染简单，也能像类组件一样有自己的状态，生命周期
+ */
+
+export default function Vote(props) {
+    let title = props.title || "",
+        [supNum, setSupNum] = useState(0),
+        [oppNum, setOppNum] = useState(0)
+
+
+    return <div>
+        <h4>{title}<span>N：{supNum + oppNum}</span></h4>
+        <p>支持人数：{supNum}</p>
+        <p>反对人数：{oppNum}</p>
+        <button onClick={ev => {
+            setSupNum(supNum + 1)
+        }}>支持</button>
+        <button onClick={ev => {
+            setOppNum(oppNum + 1)
+        }}>反对</button>
+    </div>
 }
 
-class VoteFotter extends React.Component {
-    static contextTypes = {
-        handle: PropTypes.func
-    }
-    render() {
-        return <footer className="fotterBox">
-            <button onClick={ev => {
-                this.context.handle('SUP')
-            }}>支持</button>
-            <button onClick={ev => {
-                this.context.handle('OPP')
-            }}>反对</button>
-        </footer>
-    }
-}
-
-
-export default class Vote extends React.Component {
-    static childContextTypes = {
-        supNum: PropTypes.number,
-        oppNum: PropTypes.number,
-        handle: PropTypes.func
-    }
-
-    getChildContext() {
-        // 第一次getIntailState之后执行
-        return {
-            supNum: this.state.supNum,
-            oppNum: this.state.oppNum,
-            handle: this.handle
-        }
-    }
-
-    // 我们一般都要把挂载到祖先上下文中的数据放置到组件的状态上（后期只要把祖先改变，上下文也会跟着改变）
-    state = {
-        supNum: 0,
-        oppNum: 0
-    }
-
-    handle = type => {
-        let { supNum, oppNum } = this.state
-        type == 'SUP' ? this.setState({ supNum: supNum + 1 }) : this.setState({ oppNum: oppNum + 1 })
-    }
-
-    // 设置初始值
-    constructor(props) {
-        super(props)
-        this.state = {
-            supNum: this.props.supNum,
-            oppNum: this.props.oppNum,
-        }
-    }
-    render() {
-        let { supNum, oppNum } = this.state
-        return <div className="voteBox">
-            <header className="headerBox">
-                <h3>{this.props.title}</h3>
-                <span>N: {supNum + oppNum}</span>
-            </header>
-            <VoteMain supNum={supNum} oppNum={oppNum}></VoteMain>
-            <VoteFotter></VoteFotter>
-        </div>
-    }
-}
