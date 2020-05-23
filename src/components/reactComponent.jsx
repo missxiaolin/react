@@ -371,10 +371,33 @@ import { useState } from 'react'
  *      介于函数式组件和类组件，既能像函数式组件一样，开发和渲染简单，也能像类组件一样有自己的状态，生命周期
  */
 
+// export default function Vote(props) {
+//     let title = props.title || "",
+//         [supNum, setSupNum] = useState(0),
+//         [oppNum, setOppNum] = useState(0)
+
+
+//     return <div>
+//         <h4>{title}<span>N：{supNum + oppNum}</span></h4>
+//         <p>支持人数：{supNum}</p>
+//         <p>反对人数：{oppNum}</p>
+//         <button onClick={ev => {
+//             setSupNum(supNum + 1)
+//         }}>支持</button>
+//         <button onClick={ev => {
+//             setOppNum(oppNum + 1)
+//         }}>反对</button>
+//     </div>
+// }
+
 export default function Vote(props) {
     let title = props.title || "",
-        [supNum, setSupNum] = useState(0),
-        [oppNum, setOppNum] = useState(0)
+        initialState = {
+            supNum: 0,
+            oppNum: 0
+        },
+        [state, setState] = useState(initialState),
+        { supNum, oppNum } = state
 
 
     return <div>
@@ -382,11 +405,16 @@ export default function Vote(props) {
         <p>支持人数：{supNum}</p>
         <p>反对人数：{oppNum}</p>
         <button onClick={ev => {
-            setSupNum(supNum + 1)
+            setState({
+                ...state,
+                supNum: supNum + 1
+            })
         }}>支持</button>
         <button onClick={ev => {
-            setOppNum(oppNum + 1)
+            setState({
+                ...state,
+                oppNum: oppNum + 1
+            })
         }}>反对</button>
     </div>
 }
-
