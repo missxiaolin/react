@@ -364,7 +364,7 @@ import '../assets/vote.scss'
 // }
 
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 /**
  * React.Hook 创建REACT组件的新方式
@@ -400,6 +400,21 @@ import { useState } from 'react'
 //     return [state, dispatchAction]
 // }
 
+// let prev = [];
+
+// function useEffect(callback, dependencyList) {
+//     let flag = (dependencyList && dependencyList.length > 0) ? dependencyList.some((item, index) => {
+//         return item !== prev[index]
+//     }) : (prev.length === 0 ? true : false)
+
+//     if (!dependencyList || flag) {
+//         callback()
+//         prev = dependencyList.length === 0 ? ["@@@"] : dependencyList
+//     }
+
+//     return flag
+// }
+
 
 export default function Vote(props) {
     let title = props.title || "",
@@ -407,8 +422,14 @@ export default function Vote(props) {
             supNum: 0,
             oppNum: 0
         },
+        // 使用状态
         [state, setState] = useState(initialState),
         { supNum, oppNum } = state
+
+    // 使用生命周期USE-EFFECT 每次渲染完成都是触发执行（指定依赖项，只有数组中的状态发生改变才会触发）
+    useEffect(() => {
+        console.log('ok')
+    }, [supNum])
 
 
     return <div>
