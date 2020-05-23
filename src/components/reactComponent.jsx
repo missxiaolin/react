@@ -364,7 +364,7 @@ import '../assets/vote.scss'
 // }
 
 
-import { useState } from 'react'
+// import { useState } from 'react'
 
 /**
  * React.Hook 创建REACT组件的新方式
@@ -389,6 +389,17 @@ import { useState } from 'react'
 //         }}>反对</button>
 //     </div>
 // }
+
+let state;
+
+function useState(initialState) {
+    !state ? state = initialState : null
+    function dispatchAction(newState) {
+        state = newState;
+    }
+    return [state, dispatchAction]
+}
+
 
 export default function Vote(props) {
     let title = props.title || "",
