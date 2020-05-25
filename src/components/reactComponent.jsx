@@ -416,37 +416,64 @@ import { useState, useEffect } from 'react'
 // }
 
 
-export default function Vote(props) {
-    let title = props.title || "",
-        initialState = {
-            supNum: 0,
-            oppNum: 0
-        },
-        // 使用状态
-        [state, setState] = useState(initialState),
-        { supNum, oppNum } = state
+// export default function Vote(props) {
+//     let title = props.title || "",
+//         initialState = {
+//             supNum: 0,
+//             oppNum: 0
+//         },
+//         // 使用状态
+//         [state, setState] = useState(initialState),
+//         { supNum, oppNum } = state
 
-    // 使用生命周期USE-EFFECT 每次渲染完成都是触发执行（指定依赖项，只有数组中的状态发生改变才会触发）
-    useEffect(() => {
-        console.log('ok')
-    }, [supNum])
+//     // 使用生命周期USE-EFFECT 每次渲染完成都是触发执行（指定依赖项，只有数组中的状态发生改变才会触发）
+//     useEffect(() => {
+//         console.log('ok')
+//     }, [supNum])
 
 
+//     return <div>
+//         <h4>{title}<span>N：{supNum + oppNum}</span></h4>
+//         <p>支持人数：{supNum}</p>
+//         <p>反对人数：{oppNum}</p>
+//         <button onClick={ev => {
+//             setState({
+//                 ...state,
+//                 supNum: supNum + 1
+//             })
+//         }}>支持</button>
+//         <button onClick={ev => {
+//             setState({
+//                 ...state,
+//                 oppNum: oppNum + 1
+//             })
+//         }}>反对</button>
+//     </div>
+// }
+
+
+// redux
+
+function VoteContent() {
     return <div>
-        <h4>{title}<span>N：{supNum + oppNum}</span></h4>
-        <p>支持人数：{supNum}</p>
-        <p>反对人数：{oppNum}</p>
-        <button onClick={ev => {
-            setState({
-                ...state,
-                supNum: supNum + 1
-            })
-        }}>支持</button>
-        <button onClick={ev => {
-            setState({
-                ...state,
-                oppNum: oppNum + 1
-            })
-        }}>反对</button>
+        <p>支持能：0</p>
+        <p>支持不能：0</p>
     </div>
+}
+
+function VoteButton() {
+    return <div>
+        <button>能</button>
+        <button>不能</button>
+    </div>
+}
+
+export default class Vote extends React.Component {
+    render() {
+        return <div>
+            <h3>title <span>N: 0</span></h3>
+            <VoteContent />
+            <VoteButton />
+        </div>
+    }
 }

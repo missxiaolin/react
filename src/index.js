@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/index.scss'
-import Reducer from './components/Reducer'
+import Vote from './components/reactComponent'
 
 ReactDOM.render(<div className="name">
-    <Reducer />
+    <Vote />
 </div>, document.getElementById('root'));
