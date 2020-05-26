@@ -480,13 +480,14 @@ const reducer = function(state = {
 const store = createStore(reducer)
 
 function VoteContent() {
-    let [num, changeNum] = useState(_ => 0)
+    // let [num, changeNum] = useState(_ => 0)
     // 第一次加载完，把跟新组件的操作放在事件池
-    useEffect(() => {
-        store.subscribe(() => {
-            changeNum(num + 1)
-        })
-    }, [])
+    // useEffect(() => {
+    //     store.subscribe(() => {
+    //         changeNum(num + 1)
+    //     })
+    // }, [])
+    
 
     return <div>
         <p>支持能：{store.getState().supNum}</p>
