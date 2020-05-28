@@ -453,68 +453,102 @@ import { useState, useEffect } from 'react'
 
 
 // redux
-import { createStore } from 'redux'
+// import { createStore } from 'redux'
 
 // state：现在store容器中的状态信息
 // action：dispatch派发的行为对象（必然有一个type为标识）
-const reducer = function(state = {
-    supNum: 0,
-    oppNum: 0
-}, action) {
-    let n = action.n ? action.n : 1
-    // 为防止现在的操作和之前的state用同一个堆栈，把state深克隆
-    state = JSON.parse(JSON.stringify(state))
-    switch(action.type) {
-        case 'CHANGE_SUP':
-            state.supNum += n
-            break
-        case 'CHANGE_OPP':
-            state.oppNum += n
-            break
-        default :
-            break
-    }
-    return state
-}
+// const reducer = function(state = {
+//     supNum: 0,
+//     oppNum: 0
+// }, action) {
+//     let n = action.n ? action.n : 1
+//     // 为防止现在的操作和之前的state用同一个堆栈，把state深克隆
+//     state = JSON.parse(JSON.stringify(state))
+//     switch(action.type) {
+//         case 'CHANGE_SUP':
+//             state.supNum += n
+//             break
+//         case 'CHANGE_OPP':
+//             state.oppNum += n
+//             break
+//         default :
+//             break
+//     }
+//     return state
+// }
 
-const store = createStore(reducer)
+// const store = createStore(reducer)
 
-function VoteContent() {
-    // let [num, changeNum] = useState(_ => 0)
-    // 第一次加载完，把跟新组件的操作放在事件池
-    // useEffect(() => {
-    //     store.subscribe(() => {
-    //         changeNum(num + 1)
-    //     })
-    // }, [])
+// function VoteContent() {
+//     // let [num, changeNum] = useState(_ => 0)
+//     // 第一次加载完，把跟新组件的操作放在事件池
+//     // useEffect(() => {
+//     //     store.subscribe(() => {
+//     //         changeNum(num + 1)
+//     //     })
+//     // }, [])
     
 
+//     return <div>
+//         <p>支持能：{store.getState().supNum}</p>
+//         <p>支持不能：{store.getState().oppNum}</p>
+//     </div>
+// }
+
+// function VoteButton() {
+//     return <div>
+//         <button onClick={ev => {
+//             store.dispatch({
+//                 type: 'CHANGE_SUP'
+//             })
+//         }}>能</button>
+//         <button onClick={ev => {
+//             store.dispatch({
+//                 type: 'CHANGE_OPP'
+//             })
+//         }}>不能</button>
+//     </div>
+// }
+
+// export default class Vote extends React.Component {
+//     render() {
+//         let { supNum, oppNum } = store.getState()
+//         return <div>
+//             <h3>title <span>N: {supNum + oppNum}</span></h3>
+//             <VoteContent />
+//             <VoteButton />
+//         </div>
+//     }
+
+//     componentDidMount() {
+//         // unscribe 移除事件池中的方法函数
+//         let unscribe = store.subscribe(() => {
+//             this.forceUpdate()
+//         })
+//     }
+// }
+
+
+function VoteContent() {
     return <div>
-        <p>支持能：{store.getState().supNum}</p>
-        <p>支持不能：{store.getState().oppNum}</p>
+        <p>支持能：0</p>
+        <p>支持不能：0</p>
     </div>
 }
 
 function VoteButton() {
     return <div>
         <button onClick={ev => {
-            store.dispatch({
-                type: 'CHANGE_SUP'
-            })
         }}>能</button>
         <button onClick={ev => {
-            store.dispatch({
-                type: 'CHANGE_OPP'
-            })
         }}>不能</button>
     </div>
 }
 
 export default class Vote extends React.Component {
     render() {
-        let { supNum, oppNum } = store.getState()
         return <div>
-            <h3>title <span>N: {supNum + oppNum}</span></h3>
+            <h3>title <span>N: 0</span></h3>
             <VoteContent />
             <VoteButton />
         </div>
@@ -522,8 +556,6 @@ export default class Vote extends React.Component {
 
     componentDidMount() {
         // unscribe 移除事件池中的方法函数
-        let unscribe = store.subscribe(() => {
-            this.forceUpdate()
-        })
+        
     }
 }
