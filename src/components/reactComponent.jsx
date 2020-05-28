@@ -5,7 +5,7 @@
  * 3、react hook
  */
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import '../assets/vote.scss'
 
 
@@ -364,7 +364,7 @@ import '../assets/vote.scss'
 // }
 
 
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
 
 /**
  * React.Hook 创建REACT组件的新方式
@@ -528,34 +528,54 @@ import { useState, useEffect } from 'react'
 //     }
 // }
 
+import actions from '../store/actions/index'
 
-function VoteContent() {
+
+function VoteContent(props) {
+    let { vote: {supNum, oppNum} } = props.store.getState()
     return <div>
-        <p>支持能：0</p>
-        <p>支持不能：0</p>
+        <p>支持能：{supNum}</p>
+        <p>支持不能：{oppNum}</p>
     </div>
 }
 
-function VoteButton() {
+function VoteButton(props) {
+    let store = props.store
     return <div>
         <button onClick={ev => {
+            store.dispatch(actions.vote.changeSupNum())
         }}>能</button>
         <button onClick={ev => {
+            store.dispatch(actions.vote.changeOppNum())
         }}>不能</button>
     </div>
 }
 
 export default class Vote extends React.Component {
+    constructor(props) {
+        super(props)
+        let { vote: {supNum, oppNum} } = props.store.getState()
+        this.state = {
+            supNum,
+            oppNum
+        }
+    }
+
     render() {
+        let { supNum, oppNum } = this.state,
+            store = this.props.store
         return <div>
-            <h3>title <span>N: 0</span></h3>
-            <VoteContent />
-            <VoteButton />
+            <h3>title <span>N: {supNum + oppNum}</span></h3>
+            <VoteContent store={store}  />
+            <VoteButton store={store} />
         </div>
     }
 
     componentDidMount() {
-        // unscribe 移除事件池中的方法函数
-        
+        this.props.store.subscribe(() => {
+            this.setState({
+                ...this.props.store.getState().vote
+            })
+        })
     }
 }
