@@ -528,54 +528,112 @@ import '../assets/vote.scss'
 //     }
 // }
 
+// import actions from '../store/actions/index'
+
+
+// function VoteContent(props) {
+//     let { vote: {supNum, oppNum} } = props.store.getState()
+//     return <div>
+//         <p>支持能：{supNum}</p>
+//         <p>支持不能：{oppNum}</p>
+//     </div>
+// }
+
+// function VoteButton(props) {
+//     let store = props.store
+//     return <div>
+//         <button onClick={ev => {
+//             store.dispatch(actions.vote.changeSupNum())
+//         }}>能</button>
+//         <button onClick={ev => {
+//             store.dispatch(actions.vote.changeOppNum())
+//         }}>不能</button>
+//     </div>
+// }
+
+// export default class Vote extends React.Component {
+//     constructor(props) {
+//         super(props)
+//         let { vote: {supNum, oppNum} } = props.store.getState()
+//         this.state = {
+//             supNum,
+//             oppNum
+//         }
+//     }
+
+//     render() {
+//         let { supNum, oppNum } = this.state,
+//             store = this.props.store
+//         return <div>
+//             <h3>title <span>N: {supNum + oppNum}</span></h3>
+//             <VoteContent store={store}  />
+//             <VoteButton store={store} />
+//         </div>
+//     }
+
+//     componentDidMount() {
+//         this.props.store.subscribe(() => {
+//             this.setState({
+//                 ...this.props.store.getState().vote
+//             })
+//         })
+//     }
+// }
+
 import actions from '../store/actions/index'
+import { connect } from 'react-redux'
 
 
-function VoteContent(props) {
-    let { vote: {supNum, oppNum} } = props.store.getState()
+
+
+
+
+const VoteContent = connect(state => state.vote)(props => {
     return <div>
-        <p>支持能：{supNum}</p>
-        <p>支持不能：{oppNum}</p>
+        <p>支持能：{props.supNum}</p>
+        <p>支持不能：{props.oppNum}</p>
     </div>
-}
+})
 
-function VoteButton(props) {
-    let store = props.store
+const VoteButton = connect(null, actions.vote)((props) => {
     return <div>
-        <button onClick={ev => {
-            store.dispatch(actions.vote.changeSupNum())
-        }}>能</button>
-        <button onClick={ev => {
-            store.dispatch(actions.vote.changeOppNum())
-        }}>不能</button>
+        <button onClick={props.changeSupNum}>能</button>
+        <button onClick={props.changeOppNum}>不能</button>
     </div>
-}
+})
 
-export default class Vote extends React.Component {
-    constructor(props) {
-        super(props)
-        let { vote: {supNum, oppNum} } = props.store.getState()
-        this.state = {
-            supNum,
-            oppNum
-        }
-    }
+class Vote extends React.Component {
 
     render() {
-        let { supNum, oppNum } = this.state,
-            store = this.props.store
+        let { supNum, oppNum } = this.props
         return <div>
             <h3>title <span>N: {supNum + oppNum}</span></h3>
-            <VoteContent store={store}  />
-            <VoteButton store={store} />
+            <VoteContent />
+            <VoteButton />
         </div>
     }
 
     componentDidMount() {
-        this.props.store.subscribe(() => {
-            this.setState({
-                ...this.props.store.getState().vote
-            })
-        })
+        
     }
 }
+
+// function mapStateToProps(state) {
+//     // 获取redux 容器状态
+//     return {
+//         ...state.vote
+//     }
+// }
+
+// function mapDispatchToProps(dispatch) {
+//     return {
+//         changeSupNum() {
+//             dispatch(actions.vote.changeSupNum())
+//         },
+//         changeOppNum() {
+//             dispatch(actions.vote.changeOppNum())
+//         }
+//     }
+// }
+
+export default connect(state => state.vote, actions.vote)(Vote)
