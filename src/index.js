@@ -8,6 +8,7 @@ import moment from 'moment'
 import zhCN from 'antd/es/locale/zh_CN'
 import 'antd/dist/antd.css'
 import './assets/index.scss'
+import registerServiceWorker from './registerServiceWorker';
 
 import Config, { setConfig } from "./config/index";
 
@@ -30,3 +31,5 @@ ReactDOM.render(<Provider store={store}>
         </div>
     </ConfigProvider>
 </Provider>, document.getElementById('root'));
+
+registerServiceWorker()
