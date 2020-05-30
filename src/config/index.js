@@ -192,3 +192,16 @@ export function configChange(fn){
     changeFnList.push(fn);
     fn(Config);
 }
+
+/**
+ * 设置新的project配置
+ * @param newConfig 配置对象 会和 Config.project 合并
+ */
+export function setProjectConfig(newConfig){
+    setConfig({
+        project: {
+            ...Config.project,
+            ...newConfig
+        }
+    })
+}
