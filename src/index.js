@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { ConfigProvider } from 'antd'
 import moment from 'moment'
 import zhCN from 'antd/es/locale/zh_CN'
+import './util/ClosestUtil.js'
 import 'antd/dist/antd.css'
 import './assets/index.scss'
 import registerServiceWorker from './registerServiceWorker';
