@@ -12,6 +12,7 @@ import './assets/index.scss'
 import registerServiceWorker from './registerServiceWorker';
 
 import Config, { setConfig } from "./config/index";
+import App from './view/App';
 
 setConfig({})
 
@@ -27,9 +28,7 @@ moment.prototype.toJSON = function(){
 
 ReactDOM.render(<Provider store={store}>
     <ConfigProvider locale={zhCN}>
-        <div>
-            ceshi
-        </div>
+        <App />
     </ConfigProvider>
 </Provider>, document.getElementById('root'));
 
