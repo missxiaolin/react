@@ -11,6 +11,10 @@ class Nav extends Component {
             </header>
         </div>
     }
+
+    componentWillMount() { // 如果渲染是不同组件，上一个组件销毁，下一个组件重新创建（生命周期重头开始）
+        console.log('ok')
+    }
 }
 
 export default withRouter(Nav)
