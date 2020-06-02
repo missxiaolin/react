@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 
 class Nav extends Component {
     render() {
         console.log(this.props)
         return <div>
             <header>
-                <a href="/cs" onClick={ev => {
-                    this.props.history.push('/cs')
-                }}>测试链接1</a>
-                <a href="/" onClick={ev => {
-                    this.props.history.push('/')
-                }}>测试链接2</a>
+                <Link to="/cs">测试链接1</Link>
+                <Link to="/">测试内容2</Link>
             </header>
         </div>
     }
