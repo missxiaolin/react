@@ -3,6 +3,9 @@
  */
 
 class MyPromise {
+    /**
+     * @param {*} executor 
+     */
     constructor(executor) {
         // 初始参数
         this.status = 'pending'
@@ -102,6 +105,48 @@ class MyPromise {
         return this.then(null, rejectedFn)
     }
 
+    /**
+     * @param {*} result 
+     */
+    static resolve(result) {
+        return new MyPromise(resolve => {
+            resolve(result)
+        })
+    }
+
+    /**
+     * @param {*} reason 
+     */
+    static reject(reason) {
+        return new MyPromise(_, reject => {
+            reject(reason)
+        })
+    }
+
+    /**
+     * @param {*} arr 
+     */
+    all(arr) {
+        return MyPromise((resolve, reject) => {
+            let index = 0,
+                results = []
+            for (let i = 0; i < arr.length; i++) {
+                let item = arr[i]
+                if (!(item instanceof MyPromise)) continue
+                item.then(result => {
+                    index++
+                    results[i] = result
+                    if (index === arr.length) {
+                        resolve(results)
+                    }
+
+                }).catch(reason => {
+                    // 只要有一个失败整体失败
+                    reject(reason)
+                })
+            }
+        })
+    }
 
 }
 
