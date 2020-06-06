@@ -7,15 +7,59 @@
          // 初始参数
         this.status = 'pending'
         this.value = undefined
-        
-        let resolve = function (result) {
+        this.resolvedArr = []
+        this.rejectedArr = []
 
+        let changeStatus = (status, result) => {
+            if (this.status !== 'pending') return
+            this.status = status
+            this.value = result
+            let arr = status === 'rejected' ? this.rejectedArr : this.resolvedArr
+            this.resolvedArr.forEach(item => {
+                typeof item === 'function' ? item(this.value) : null
+            })
         }
-        let reject = function(reason) {
 
+        let resolve = result => {
+            if (this.resolvedArr.length > 0) {
+                changeStatus('resolved', result)
+                return
+            }
+            let delayTimer = setTimeout(() => {
+                clearTimeout(delayTimer)
+                changeStatus('resolved', result)
+            }, 0)
+            
         }
-        executor(resolve, reject)
+        let reject = reason => {
+            if (this.rejectedArr.length > 0) {
+                changeStatus('rejected', reason)
+                return
+            }
+            let delayTimer = setTimeout(() => {
+                clearTimeout(delayTimer)
+                changeStatus('rejected', reason)
+            }, 0)
+            
+        }
+        try {
+            executor(resolve, reject)
+        }catch(error) {
+            reject(error)
+        }
      }
+
+     /**
+      * 返回
+      * @param {*} resolvedFn 
+      * @param {*} rejectedFn 
+      */
+     then(resolvedFn, rejectedFn) {
+        this.resolvedArr.push(resolvedFn)
+        this.rejectedArr.push(rejectedFn)
+     }
+
+    
 }
 
 module.exports = MyPromise
